@@ -1,21 +1,30 @@
 package duke.helper;
+
 import java.util.ArrayList;
 
 public class Task {
-    static ArrayList<String> tasks = new ArrayList<>();
+    protected String description;
+    protected boolean isDone;
 
-    public static void add(String line) {
-        int tasks_size = tasks.size() + 1;
-        String item_number = String.valueOf(tasks_size);
-        tasks.add( item_number + ". " + line);
+    public Task(String description) {
+        this.description = description;
+        this.isDone = false;
     }
-    public static void list() {
-        if (tasks.isEmpty()) {
-            System.out.println("The list is empty!");
-        } else {
-            for (String task : tasks) {
-                System.out.println(task);
-            }
+
+    public String getStatusIcon() {
+        return (isDone ? "X" : " "); // mark done task with X
+    }
+
+    public void setStatusIcon(String instruction) {
+        if (instruction == "mark") {
+            isDone = true;
         }
+        if (instruction == "unmark") {
+            isDone = false;
+        }
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
