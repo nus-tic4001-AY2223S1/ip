@@ -1,4 +1,6 @@
+import duke.helper.*;
 import java.util.Scanner;
+
 public class Duke {
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -7,7 +9,7 @@ public class Duke {
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";
         System.out.println("Hello from\n" + logo);
-        System.out.println("");
+        System.out.println();
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
         System.out.println();
@@ -21,9 +23,10 @@ public class Duke {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else if (line.equals("list")) {
-                System.out.println("list");
-            } else if (line.equals("blah")) {
-                System.out.println("blah");
+                Task.list();
+            } else {
+                Task.add(line);
+                System.out.println("added: " + line);
             }
         }
     }
