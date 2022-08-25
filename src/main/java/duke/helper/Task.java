@@ -1,14 +1,14 @@
 package duke.helper;
 
-import java.util.ArrayList;
-
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected static int totalTask;
 
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.totalTask++;
     }
 
     public String getStatusIcon() {
@@ -26,5 +26,14 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public static int getTotalTask() {
+        return totalTask;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getStatusIcon() + "] " + getDescription();
     }
 }
