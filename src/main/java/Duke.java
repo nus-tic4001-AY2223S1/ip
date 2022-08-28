@@ -6,7 +6,7 @@ public class Duke {
     public static Task[] list = new Task[100];
 
     public static void sort(String t) {
-        if (t.contains("todo")) {
+        if (t.contains("todo")) {                                               //Switch Case - td
             String description = t.substring(5);
             Task[] print = Arrays.copyOf(list,count);   //To prompt an error if task is added previously
             for (Task p : print) {
@@ -17,7 +17,7 @@ public class Duke {
             }
             list[count] = new Todo(description);
         }
-        else if (t.contains("deadline")) {
+        else if (t.contains("deadline")) {                                      //Switch Case - Deadline
             int n = t.indexOf('/');
             String description = t.substring(9, n-1);
             String by = t.substring(n+4);
@@ -30,7 +30,7 @@ public class Duke {
             }
             list[count] = new Deadline(description, by);
         }
-        else if (t.contains("event")) {
+        else if (t.contains("event")) {                                        //Switch Case - Event
             int n = t.indexOf('/');
             String description = t.substring(6, n-1);
             String at = t.substring(n+4);
@@ -49,11 +49,11 @@ public class Duke {
         Scanner in = new Scanner(System.in);
         line = in.nextLine();
 
-        if (line.equals("bye")) {
+        if (line.equals("bye")) {                                                //Switch Case - Bye
             System.out.println("Bye. Hope to see you again soon!");
             System.exit(0);
         }
-        else if (line.equals("list")) {
+        else if (line.equals("list")) {                                          //Switch Case - List
                 System.out.println("Here are the tasks in your list:\n");
                 Task[] print = Arrays.copyOf(list,count);
                 for (Task p : print) {
@@ -64,7 +64,7 @@ public class Duke {
                 seq = 1;
                 echo();
         }
-        else if (line.contains("unmark")) {
+        else if (line.contains("unmark")) {                                      //Switch Case - Unmark
             String[] words = line.split(" ");
             if (words.length < 2) {
                 System.out.println("Error: Please enter which task is unmarked\n");
@@ -85,7 +85,7 @@ public class Duke {
             System.out.println(list[n-1] + "\n");
             echo();
         }
-        else if (line.contains("mark")) {
+        else if (line.contains("mark")) {                                       //Switch Case - Mark
             String[] words = line.split(" ");
             if (words.length < 2) {
                 System.out.println("Error: Please enter which task is marked\n");
@@ -106,7 +106,7 @@ public class Duke {
             System.out.println(list[n-1] + "\n");
             echo();
         }
-        else {
+        else {                                                                  //Switch Case - Add task
             sort(line);
             System.out.println("Got it. I've added this task:");
             System.out.println(list[count]);
