@@ -84,9 +84,7 @@ public class Duke {
                 throw new DukeException("Error: Please enter which task to unmark\n");
             }
             int n = Integer.parseInt(words[1]);
-            if (n > count) {
-                throw new DukeException("Error: Please enter a valid task number\n");
-            }
+            if (n > count) throw new DukeException("Error: Please enter a valid task number\n");
             if (list[n-1].getStatusIcon().equals(" ")) {
                 throw new DukeException("Error: Task has already been unmarked\n");
             }
