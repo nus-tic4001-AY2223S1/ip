@@ -55,19 +55,19 @@ public class Duke {
                     if (line.contains("todo")) {
                         String description = line.substring(5);
 
-                        taskList.add(new Todo(description));
+                        taskList.add(new TodoTask(description));
                         System.out.println("       " + (taskList.get(taskList.size() - 1)));
                     } else if (line.contains("deadline")) {
                         String description = line.substring(9, line.indexOf(" /by"));
                         String by = line.substring(line.indexOf("/by") + 4);
 
-                        taskList.add(new Deadline(description, by));
+                        taskList.add(new DeadlineTask(description, by));
                         System.out.println("       " + (taskList.get(taskList.size() - 1)));
                     } else if (line.contains("event")) {
                         String description = line.substring(6, line.indexOf(" /at"));
                         String at = line.substring(line.indexOf("/at") + 4);
 
-                        taskList.add(new Event(description, at));
+                        taskList.add(new EventTask(description, at));
                         System.out.println("       " + (taskList.get(taskList.size() - 1)));
                     } else {
                         taskList.add(new Task(line));
