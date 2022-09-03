@@ -5,79 +5,73 @@ import java.util.Scanner;
 public class Duke {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void echo() {
-        while (true) {
-            String line;
-            Scanner in = new Scanner(System.in);
-            line = in.nextLine();
+    public static void navigateTasks(String s) {
+        String firstWord[] = s.split(" ", 2);
 
-            System.out.println();
-            if (line.equals("bye")) {
-                System.out.println("    Bye. Hope to see you again soon!");
-                break;
-            } else if (line.equals("list")) {
+        switch (firstWord[0]) {
+            case "list":
                 if (taskList.isEmpty()) {
                     System.out.println("    The list is empty!");
                 } else {
                     System.out.println("    Here are the tasks in your list:");
                     for (int i = 0; i < taskList.size(); i++) {
-                        System.out.println("      " + (i+1) + "." + (taskList.get(i)));
+                        System.out.println("      " + (i + 1) + "." + (taskList.get(i)));
                     }
                 }
-            } else if (line.startsWith("mark")) {
-                int taskIndex = Integer.parseInt(line.substring(5)) - 1;
+                break;
+            case "mark":
+                int markTaskIndex = Integer.parseInt(s.substring(5)) - 1;
 
-                taskList.get(taskIndex).setStatusIcon("mark");
+                taskList.get(markTaskIndex).setStatusIcon("mark");
 
                 System.out.println("    Nice! I've marked this task as done:");
-                System.out.println("      " + taskList.get(taskIndex));
-            } else if (line.startsWith("unmark")) {
-                int taskIndex = Integer.parseInt(line.substring(7)) - 1;
+                System.out.println("      " + taskList.get(markTaskIndex));
+                break;
+            case "unmark":
+                int unmarkTaskIndex = Integer.parseInt(s.substring(7)) - 1;
 
-                taskList.get(taskIndex).setStatusIcon("unmark");
+                taskList.get(unmarkTaskIndex).setStatusIcon("unmark");
 
                 System.out.println("    OK, I've marked this task as not done yet:");
-                System.out.println("      " + taskList.get(taskIndex));
-            } else {
-                boolean isIncluded = false;
-
-                for (Task task : taskList) {
-                    if (task.getDescription().equals(line)) {
-                        isIncluded = true;
-                        break;
-                    }
-                }
-
-                if (isIncluded) {
-                    System.out.println("The current list contains this item.");
-                } else {
-                    System.out.println("     Got it. I've added this task:");
-                    if (line.contains("todo")) {
-                        String description = line.substring(5);
-
-                        taskList.add(new TodoTask(description));
-                        System.out.println("       " + (taskList.get(taskList.size() - 1)));
-                    } else if (line.contains("deadline")) {
-                        String description = line.substring(9, line.indexOf(" /by"));
-                        String by = line.substring(line.indexOf("/by") + 4);
-
-                        taskList.add(new DeadlineTask(description, by));
-                        System.out.println("       " + (taskList.get(taskList.size() - 1)));
-                    } else if (line.contains("event")) {
-                        String description = line.substring(6, line.indexOf(" /at"));
-                        String at = line.substring(line.indexOf("/at") + 4);
-
-                        taskList.add(new EventTask(description, at));
-                        System.out.println("       " + (taskList.get(taskList.size() - 1)));
-                    } else {
-                        taskList.add(new Task(line));
-                        System.out.println("       added: " + (taskList.get(taskList.size() - 1)));
-                    }
-                    System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
-                }
-            }
-            System.out.println();
+                System.out.println("      " + taskList.get(unmarkTaskIndex));
+                break;
         }
+    }
+
+    public static void addTask(String s) {
+        String description;
+        String firstWord[] = s.split(" ", 2);
+
+        System.out.println("     Got it. I've added this task:");
+
+        switch (firstWord[0]) {
+            case "todo":
+                description = s.substring(5);
+
+                taskList.add(new TodoTask(description));
+                break;
+            case "deadline":
+                description = s.substring(9, s.indexOf(" /by"));
+                String by = s.substring(s.indexOf("/by") + 4);
+
+                taskList.add(new DeadlineTask(description, by));
+                break;
+            case "event":
+                description = s.substring(6, s.indexOf(" /at"));
+                String at = s.substring(s.indexOf("/at") + 4);
+
+                taskList.add(new EventTask(description, at));
+                break;
+        }
+    }
+
+    public static void printTask() {
+        System.out.println("       " + (taskList.get(taskList.size() - 1)));
+        System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
+    }
+
+    public static void echo() {
+        ;
     }
     public static void main(String[] args) {
         String logo = " ____        _        \n"
@@ -90,7 +84,24 @@ public class Duke {
         System.out.println("Hello! I'm Duke" + System.lineSeparator() + "What can I do for you?");
         System.out.println();
 
-        echo();
+        while (true) {
+            String line;
+            Scanner in = new Scanner(System.in);
+            line = in.nextLine();
+
+            System.out.println();
+
+            if (line.equals("bye")) {
+                System.out.println("    Bye. Hope to see you again soon!");
+                break;
+            } else if ((line.equals("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
+                navigateTasks(line);
+            } else {
+                addTask(line);
+                printTask();
+            }
+            System.out.println();
+        }
     }
 }
 
