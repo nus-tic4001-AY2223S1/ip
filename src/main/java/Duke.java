@@ -5,13 +5,47 @@ import java.util.Scanner;
 public class Duke {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void navigateTasks(String s) {
+    public static void filterInput() throws DukeException {
+        String line;
+        Scanner in = new Scanner(System.in);
+        line = in.nextLine();
+
+        System.out.println();
+
+        try {
+            if ((line.startsWith("bye")) || (line.startsWith("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
+                operateOnTasks(line);
+            } else if ((line.startsWith("todo")) || (line.startsWith("deadline")) || (line.startsWith("event"))) {
+                if (line.equals("todo") || line.equals("deadline") || line.equals("event")) {
+                    throw new DukeException("\u2639 " + line + " keyword must not be empty!");
+                } else if (line.equals("todo ") || line.equals("deadline ") || line.equals("event ")) {
+                    throw new DukeException("\u2639 " + line + "keyword must not be empty!");
+                } else {
+                    addTask(line);
+                    printTask();
+                }
+            } else {
+                throw new DukeException("\u2639 " + "OOPS!!! I'm sorry, but I don't know what that means :-(");
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new DukeException("\u2639 " + line + " keyword must be succeeded with valid, new task");
+        }
+
+        System.out.println();
+
+    }
+
+    public static void operateOnTasks(String s) throws DukeException {
         String firstWord[] = s.split(" ", 2);
 
         switch (firstWord[0]) {
+            case "bye":
+                System.out.println("    Bye. Hope to see you again soon!");
+                System.exit(0);
+                break;
             case "list":
                 if (taskList.isEmpty()) {
-                    System.out.println("    The list is empty!");
+                    throw new DukeException("    The list is empty!");
                 } else {
                     System.out.println("    Here are the tasks in your list:");
                     for (int i = 0; i < taskList.size(); i++) {
@@ -20,59 +54,83 @@ public class Duke {
                 }
                 break;
             case "mark":
-                int markTaskIndex = Integer.parseInt(s.substring(5)) - 1;
+                try {
+                    int markTaskIndex = Integer.parseInt(s.substring(5)) - 1;
 
-                taskList.get(markTaskIndex).setStatusIcon("mark");
+                    taskList.get(markTaskIndex).setStatusIcon("mark");
 
-                System.out.println("    Nice! I've marked this task as done:");
-                System.out.println("      " + taskList.get(markTaskIndex));
-                break;
+                    System.out.println("    Nice! I've marked this task as done:");
+                    System.out.println("      " + taskList.get(markTaskIndex));
+                    break;
+                } catch (StringIndexOutOfBoundsException e) {
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format for \'mark\' keyword must be provided.");
+                } catch (IndexOutOfBoundsException e) {
+                    throw new DukeException("\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
+                } catch (NumberFormatException e) {
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! \'mark\' keyword must be succeeded with a positive integer.");
+                }
             case "unmark":
-                int unmarkTaskIndex = Integer.parseInt(s.substring(7)) - 1;
+                try {
+                    int unmarkTaskIndex = Integer.parseInt(s.substring(7)) - 1;
 
-                taskList.get(unmarkTaskIndex).setStatusIcon("unmark");
+                    taskList.get(unmarkTaskIndex).setStatusIcon("unmark");
 
-                System.out.println("    OK, I've marked this task as not done yet:");
-                System.out.println("      " + taskList.get(unmarkTaskIndex));
-                break;
+                    System.out.println("    OK, I've marked this task as not done yet:");
+                    System.out.println("      " + taskList.get(unmarkTaskIndex));
+                    break;
+                } catch (StringIndexOutOfBoundsException e) {
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format for \'unmark\' keyword must be provided.");
+                } catch (IndexOutOfBoundsException e) {
+                    throw new DukeException("\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
+                } catch (NumberFormatException e) {
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! \'unmark\' keyword must be succeeded with a positive integer.");
+                }
         }
     }
 
-    public static void addTask(String s) {
+    public static void addTask(String s) throws DukeException {
         String description;
+        boolean isIncluded = false;
         String firstWord[] = s.split(" ", 2);
 
-        System.out.println("     Got it. I've added this task:");
-
-        switch (firstWord[0]) {
-            case "todo":
-                description = s.substring(5);
-
-                taskList.add(new TodoTask(description));
+        for (Task task : taskList) {
+            if (task.getDescription().equals((firstWord[1].split(" /", 2))[0])) {
+                isIncluded = true;
                 break;
-            case "deadline":
-                description = s.substring(9, s.indexOf(" /by"));
-                String by = s.substring(s.indexOf("/by") + 4);
+            }
+        }
 
-                taskList.add(new DeadlineTask(description, by));
-                break;
-            case "event":
-                description = s.substring(6, s.indexOf(" /at"));
-                String at = s.substring(s.indexOf("/at") + 4);
+        if (isIncluded) {
+            throw new DukeException("The current list contains this task.");
+        } else {
+            switch (firstWord[0]) {
+                case "todo":
+                    description = s.substring(5);
 
-                taskList.add(new EventTask(description, at));
-                break;
+                    taskList.add(new TodoTask(description));
+                    break;
+                case "deadline":
+                    description = s.substring(9, s.indexOf(" /by"));
+                    String by = s.substring(s.indexOf("/by") + 4);
+
+                    taskList.add(new DeadlineTask(description, by));
+                    break;
+                case "event":
+                    description = s.substring(6, s.indexOf(" /at"));
+                    String at = s.substring(s.indexOf("/at") + 4);
+
+                    taskList.add(new EventTask(description, at));
+                    break;
+            }
         }
     }
 
     public static void printTask() {
+        System.out.println("     Got it. I've added this task:");
         System.out.println("       " + (taskList.get(taskList.size() - 1)));
         System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
     }
 
-    public static void echo() {
-        ;
-    }
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -84,23 +142,12 @@ public class Duke {
         System.out.println("Hello! I'm Duke" + System.lineSeparator() + "What can I do for you?");
         System.out.println();
 
-        while (true) {
-            String line;
-            Scanner in = new Scanner(System.in);
-            line = in.nextLine();
-
-            System.out.println();
-
-            if (line.equals("bye")) {
-                System.out.println("    Bye. Hope to see you again soon!");
-                break;
-            } else if ((line.equals("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
-                navigateTasks(line);
-            } else {
-                addTask(line);
-                printTask();
+        while(true) {
+            try {
+                filterInput();
+            } catch (DukeException e) {
+                System.out.println(e.getMessage());
             }
-            System.out.println();
         }
     }
 }
