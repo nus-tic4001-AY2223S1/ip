@@ -5,10 +5,32 @@ import java.util.Scanner;
 public class Duke {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
-    public static void navigateTasks(String s) {
+    public static void filterInput() throws DukeException {
+        String line;
+        Scanner in = new Scanner(System.in);
+        line = in.nextLine();
+
+        System.out.println();
+
+        if ((line.equals("bye")) || (line.equals("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
+            operateTasks(line);
+        } else if ((line.startsWith("todo")) || (line.startsWith("deadline")) || (line.startsWith("event"))) {
+            addTask(line);
+            printTask();
+        } else {
+            throw new DukeException("\u2639" + " OOPS!!! I'm sorry, but I don't know what that means :-(");
+        }
+        System.out.println();
+    }
+
+    public static void operateTasks(String s) throws DukeException {
         String firstWord[] = s.split(" ", 2);
 
         switch (firstWord[0]) {
+            case "bye":
+                System.out.println("    Bye. Hope to see you again soon!");
+                System.exit(0);
+                break;
             case "list":
                 if (taskList.isEmpty()) {
                     System.out.println("    The list is empty!");
@@ -38,7 +60,7 @@ public class Duke {
         }
     }
 
-    public static void addTask(String s) {
+    public static void addTask(String s) throws DukeException {
         String description;
         String firstWord[] = s.split(" ", 2);
 
@@ -70,9 +92,6 @@ public class Duke {
         System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
     }
 
-    public static void echo() {
-        ;
-    }
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -84,23 +103,12 @@ public class Duke {
         System.out.println("Hello! I'm Duke" + System.lineSeparator() + "What can I do for you?");
         System.out.println();
 
-        while (true) {
-            String line;
-            Scanner in = new Scanner(System.in);
-            line = in.nextLine();
-
-            System.out.println();
-
-            if (line.equals("bye")) {
-                System.out.println("    Bye. Hope to see you again soon!");
-                break;
-            } else if ((line.equals("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
-                navigateTasks(line);
-            } else {
-                addTask(line);
-                printTask();
+        while(true) {
+            try {
+                filterInput();
+            } catch (DukeException e) {
+                System.out.println(e.getMessage());
             }
-            System.out.println();
         }
     }
 }
