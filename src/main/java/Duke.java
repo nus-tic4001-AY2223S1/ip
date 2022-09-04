@@ -12,18 +12,30 @@ public class Duke {
 
         System.out.println();
 
-        if ((line.startsWith("bye")) || (line.startsWith("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
-            operateTasks(line);
-        } else if ((line.startsWith("todo")) || (line.startsWith("deadline")) || (line.startsWith("event"))) {
-            addTask(line);
-            printTask();
-        } else {
-            throw new DukeException("\u2639" + " OOPS!!! I'm sorry, but I don't know what that means :-(");
+        try {
+            if ((line.startsWith("bye")) || (line.startsWith("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
+                operateOnTasks(line);
+            } else if ((line.startsWith("todo")) || (line.startsWith("deadline")) || (line.startsWith("event"))) {
+                if (line.equals("todo") || line.equals("deadline") || line.equals("event")) {
+                    throw new DukeException("\u2639 " + line + " keyword must not be empty!");
+                } else if (line.equals("todo ") || line.equals("deadline ") || line.equals("event ")) {
+                    throw new DukeException("\u2639 " + line + "keyword must not be empty!");
+                } else {
+                    addTask(line);
+                    printTask();
+                }
+            } else {
+                throw new DukeException("\u2639 " + "OOPS!!! I'm sorry, but I don't know what that means :-(");
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new DukeException("\u2639 " + line + " keyword must be succeeded with valid, new task");
         }
+
         System.out.println();
+
     }
 
-    public static void operateTasks(String s) throws DukeException {
+    public static void operateOnTasks(String s) throws DukeException {
         String firstWord[] = s.split(" ", 2);
 
         switch (firstWord[0]) {
@@ -51,11 +63,11 @@ public class Duke {
                     System.out.println("      " + taskList.get(markTaskIndex));
                     break;
                 } catch (StringIndexOutOfBoundsException e) {
-                    throw new DukeException("\u2639" + " Check the Duke basic input commands!!! Correct input format for \'mark\' keyword must be provided.");
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format for \'mark\' keyword must be provided.");
                 } catch (IndexOutOfBoundsException e) {
-                    throw new DukeException("\u2639" + " OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
+                    throw new DukeException("\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
                 } catch (NumberFormatException e) {
-                    throw new DukeException("\u2639" + " Check the Duke basic input commands!!! \'mark\' keyword must be succeeded with a positive integer.");
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! \'mark\' keyword must be succeeded with a positive integer.");
                 }
             case "unmark":
                 try {
@@ -67,43 +79,54 @@ public class Duke {
                     System.out.println("      " + taskList.get(unmarkTaskIndex));
                     break;
                 } catch (StringIndexOutOfBoundsException e) {
-                    throw new DukeException("\u2639" + " Check the Duke basic input commands!!! Correct input format for \'unmark\' keyword must be provided.");
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format for \'unmark\' keyword must be provided.");
                 } catch (IndexOutOfBoundsException e) {
-                    throw new DukeException("\u2639" + " OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
+                    throw new DukeException("\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
                 } catch (NumberFormatException e) {
-                    throw new DukeException("\u2639" + " Check the Duke basic input commands!!! \'unmark\' keyword must be succeeded with a positive integer.");
+                    throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! \'unmark\' keyword must be succeeded with a positive integer.");
                 }
         }
     }
 
     public static void addTask(String s) throws DukeException {
         String description;
+        boolean isIncluded = false;
         String firstWord[] = s.split(" ", 2);
 
-        System.out.println("     Got it. I've added this task:");
-
-        switch (firstWord[0]) {
-            case "todo":
-                description = s.substring(5);
-
-                taskList.add(new TodoTask(description));
+        for (Task task : taskList) {
+            if (task.getDescription().equals((firstWord[1].split(" /", 2))[0])) {
+                isIncluded = true;
                 break;
-            case "deadline":
-                description = s.substring(9, s.indexOf(" /by"));
-                String by = s.substring(s.indexOf("/by") + 4);
+            }
+        }
 
-                taskList.add(new DeadlineTask(description, by));
-                break;
-            case "event":
-                description = s.substring(6, s.indexOf(" /at"));
-                String at = s.substring(s.indexOf("/at") + 4);
+        if (isIncluded) {
+            throw new DukeException("The current list contains this task.");
+        } else {
+            switch (firstWord[0]) {
+                case "todo":
+                    description = s.substring(5);
 
-                taskList.add(new EventTask(description, at));
-                break;
+                    taskList.add(new TodoTask(description));
+                    break;
+                case "deadline":
+                    description = s.substring(9, s.indexOf(" /by"));
+                    String by = s.substring(s.indexOf("/by") + 4);
+
+                    taskList.add(new DeadlineTask(description, by));
+                    break;
+                case "event":
+                    description = s.substring(6, s.indexOf(" /at"));
+                    String at = s.substring(s.indexOf("/at") + 4);
+
+                    taskList.add(new EventTask(description, at));
+                    break;
+            }
         }
     }
 
     public static void printTask() {
+        System.out.println("     Got it. I've added this task:");
         System.out.println("       " + (taskList.get(taskList.size() - 1)));
         System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
     }
