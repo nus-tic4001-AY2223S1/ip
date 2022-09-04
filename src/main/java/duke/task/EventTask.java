@@ -9,7 +9,8 @@ public class EventTask extends Task {
     }
 
     @Override
+//    public String toString() { return "[E]" + super.toString() + " (at: " + at + ")"; }
     public String toString() {
-        return "[E]" + super.toString() + " (at: " + at + ")";
+        return "[E]" + "[" + getStatusIcon() + "] " + getDescription() + " (at: " + at + ")";
     }
 }
