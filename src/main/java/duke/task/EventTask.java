@@ -1,4 +1,4 @@
-package duke.helper;
+package duke.task;
 
 public class EventTask extends Task {
     protected String at;
