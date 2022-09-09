@@ -1,5 +1,11 @@
+package command;
+
 import java.util.Scanner;
 import java.util.Arrays;
+import task.Task;
+import task.Todo;
+import task.Deadline;
+import task.Event;
 public class Duke {
     public static int count = 0;
     public static int seq = 1;
@@ -14,7 +20,7 @@ public class Duke {
             Task[] print = Arrays.copyOf(list,count);
             for (Task p : print) {
                 if (p.description.equals(description)) {
-                    throw new DukeException("Error: Task has already been added previously\n");
+                    throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
             list[count] = new Todo(description);
@@ -32,7 +38,7 @@ public class Duke {
             Task[] print = Arrays.copyOf(list,count);
             for (Task p : print) {
                 if (p.description.equals(description)) {
-                    throw new DukeException("Error: Task has already been added previously\n");
+                    throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
             list[count] = new Deadline(description, by);
@@ -50,16 +56,16 @@ public class Duke {
             Task[] print = Arrays.copyOf(list,count);
             for (Task p : print) {
                 if (p.description.equals(description)) {
-                    throw new DukeException("Error: Task has already been added previously\n");
+                    throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
             list[count] = new Event(description, at);
         }
         else {
-            throw new DukeException("Error: Task specified must be within the category of 'todo' / 'event' / 'deadline' only \n");
+            throw new DukeException("Error: task.Task specified must be within the category of 'todo' / 'event' / 'deadline' only \n");
         }
     }
-    public static void echo() throws DukeException{ //classify commands such as bye / list / unmark / mark / add tasks
+    public static void echo() throws DukeException { //classify commands such as bye / list / unmark / mark / add tasks
         String line;
         Scanner in = new Scanner(System.in);
         line = in.nextLine();
@@ -86,7 +92,7 @@ public class Duke {
             int n = Integer.parseInt(words[1]);
             if (n > count) throw new DukeException("Error: Please enter a valid task number\n");
             if (list[n-1].getStatusIcon().equals(" ")) {
-                throw new DukeException("Error: Task has already been unmarked\n");
+                throw new DukeException("Error: task.Task has already been unmarked\n");
             }
             else {
                 System.out.println("OK, I've marked this task as not done yet:");
@@ -105,7 +111,7 @@ public class Duke {
                 throw new DukeException("Error: Please enter a valid task number\n");
             }
             if (list[n-1].getStatusIcon().equals("X")) {
-                throw new DukeException("Error: Task has already been marked\n");
+                throw new DukeException("Error: task.Task has already been marked\n");
             }
             else {
                 System.out.println("Nice! I've marked this task as done:");
@@ -124,7 +130,7 @@ public class Duke {
     }
 
     public static void main(String[] args) throws DukeException {
-        String greet = "Hello! I'm Duke\n" + "What can I do for you?\n";
+        String greet = "Hello! I'm command.Duke\n" + "What can I do for you?\n";
         System.out.println(greet);
         while(true) {
             try {
