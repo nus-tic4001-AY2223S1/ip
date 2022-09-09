@@ -1,4 +1,4 @@
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
@@ -11,11 +11,13 @@ public class Task {
         return (isDone ? "X" : " "); //return X or blank symbols
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setStatus(boolean isDone) {
         this.isDone = isDone;
     }
 
-    public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
-    }
+    public abstract String toString();
 }
