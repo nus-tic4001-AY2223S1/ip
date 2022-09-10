@@ -14,7 +14,7 @@ public class Duke {
         System.out.println();
 
         try {
-            if ((line.startsWith("bye")) || (line.startsWith("list")) || (line.startsWith("mark")) || line.startsWith("unmark")) {
+            if ((line.startsWith("bye")) || (line.startsWith("list")) || (line.startsWith("mark")) || line.startsWith("unmark") || line.startsWith("delete")) {
                 operateOnTasks(line);
             } else if ((line.startsWith("todo")) || (line.startsWith("deadline")) || (line.startsWith("event"))) {
                 if (line.equals("todo") || line.equals("deadline") || line.equals("event")) {
@@ -23,17 +23,16 @@ public class Duke {
                     throw new DukeException("\u2639 " + line + "keyword must not be empty!");
                 } else {
                     addTask(line);
-                    printTask();
                 }
             } else {
                 throw new DukeException("\u2639 " + "OOPS!!! I'm sorry, but I don't know what that means :-(");
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new DukeException("\u2639 " + line + " keyword must be succeeded with valid, new task");
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format must be provided.");
         }
-
         System.out.println();
-
     }
 
     public static void operateOnTasks(String s) throws DukeException {
@@ -86,6 +85,16 @@ public class Duke {
                 } catch (NumberFormatException e) {
                     throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! \'unmark\' keyword must be succeeded with a positive integer.");
                 }
+            case "delete":
+                int taskIndex = Integer.parseInt(firstWord[1]);
+
+                if (taskIndex < 1 || taskIndex > taskList.size()) {
+                    throw new DukeException("The task item passed is not within the current task list range.");
+                } else {
+                    printTask(Integer.toString(taskIndex));
+                    taskList.remove(taskIndex - 1);
+                }
+                break;
         }
     }
 
@@ -123,14 +132,22 @@ public class Duke {
                     taskList.add(new EventTask(description, at));
                     break;
             }
+            printTask("add");
         }
     }
 
-    public static void printTask() {
-        System.out.println("     Got it. I've added this task:");
-        System.out.println("       " + (taskList.get(taskList.size() - 1)));
-        System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
+    public static void printTask(String instruction) {
+        if (instruction == "add") {
+            System.out.println("     Got it. I've added this task:");
+            System.out.println("       " + (taskList.get(taskList.size() - 1)));
+            System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
+        } else {
+            System.out.println("     Noted. I've removed this task:");
+            System.out.println("       " + (taskList.get(Integer.parseInt(instruction) - 1)));
+            System.out.println("     Now you have " + (taskList.size() - 1) + " task(s) in the list.");
+        }
     }
+
 
     public static void main(String[] args) {
         String logo = " ____        _        \n"
