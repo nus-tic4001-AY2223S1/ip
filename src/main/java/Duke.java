@@ -3,6 +3,11 @@ import duke.exception.DukeException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * This <code>Duke</code> class is the main class of the Duke application.
+ * This includes the main method and other methods that taps into abstracted
+ * classes.
+ */
 public class Duke {
     private static ArrayList<Task> taskList = new ArrayList<>();
 
@@ -35,6 +40,16 @@ public class Duke {
         System.out.println();
     }
 
+    /**
+     * <code>operateOnTasks</code> method allows the user to perform the Duke basic commands
+     * for manipulating the stored data.
+     *
+     * @param bye terminates the Duke application from running.
+     * @param list prints all the task saved from the file to the console.
+     * @param mark checks the tick box.
+     * @param unmark unchecked the tick box.
+     * @param delete deletes selected task on the file.
+     */
     public static void operateOnTasks(String s) throws DukeException {
         String firstWord[] = s.split(" ", 2);
 

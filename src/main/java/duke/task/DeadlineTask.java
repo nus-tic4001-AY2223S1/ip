@@ -1,5 +1,9 @@
 package duke.task;
 
+/**
+ * This <code>Deadline</code> class extends the abstract <code>Todo</code> class.
+ * Object instantiated by this class returns task with completion day.
+ */
 public class DeadlineTask extends Task {
     protected String by;
 
