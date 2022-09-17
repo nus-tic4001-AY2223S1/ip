@@ -1,11 +1,21 @@
 package duke.task;
 
 public class DeadlineTask extends Task {
-    protected String by;
+    public String by;
 
     public DeadlineTask(String description, String by) {
         super(description);
         this.by = by;
+    }
+
+    public DeadlineTask(String description, boolean status, String by) {
+        super(description, status);
+        this.by = by;
+    }
+
+    @Override
+    public String getDetails() {
+        return by;
     }
 
     @Override
