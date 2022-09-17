@@ -15,12 +15,6 @@ public abstract class Task {
         this.totalTask++;
     }
 
-    /**
-     * Returns either "X" or " ".
-     *
-     * @param "X" means that the task has been completed.
-     * @param " " means that the task has not been done yet.
-     */
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
