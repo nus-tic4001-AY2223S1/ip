@@ -11,6 +11,12 @@ public abstract class Task {
         this.totalTask++;
     }
 
+    public Task(String description, boolean status) {
+        this.description = description;
+        this.isDone = status;
+        this.totalTask++;
+    }
+
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
@@ -27,6 +33,8 @@ public abstract class Task {
     public String getDescription() {
         return description;
     }
+
+    public String getDetails() {return "";};
 
     public static int getTotalTask() {
         return totalTask;

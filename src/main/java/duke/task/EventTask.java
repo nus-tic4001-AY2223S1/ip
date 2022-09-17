@@ -8,6 +8,16 @@ public class EventTask extends Task {
         this.at = at;
     }
 
+    public EventTask(String description, boolean status, String at) {
+        super(description, status);
+        this.at = at;
+    }
+
+    @Override
+    public String getDetails() {
+        return at;
+    }
+
     @Override
 //    public String toString() { return "[E]" + super.toString() + " (at: " + at + ")"; }
     public String toString() {
