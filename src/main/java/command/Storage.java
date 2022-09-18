@@ -4,8 +4,7 @@ import task.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,8 +15,7 @@ import java.util.Scanner;
 public class Storage {
 
     protected static int count = 0;
-    protected static String Directory = "./data/";
-    protected static String FileLocation = "data/duke.txt";
+    protected static String FileLocation = FilePath.FileLocation;
     protected static ArrayList<Task> list = new ArrayList<>();
 
     /**
@@ -42,12 +40,14 @@ public class Storage {
                 int m = current.indexOf("(");
                 int n = current.indexOf(")");
                 String description = current.substring(7,m-1);
-                String by = current.substring(m+5,n);
+                LocalDate localDate = Parser.parse(current.substring(0,n));
+
+                assert localDate != null;
                 if (current.contains("[D]")) {
-                    list.add(new Deadline(description,by));
+                    list.add(new Deadline(description,localDate));
                 }
                 else {
-                    list.add(new Event(description,by));
+                    list.add(new Event(description,localDate));
                 }
                 if (current.contains("X")) {
                     list.get(count).setStatus(true);
@@ -65,8 +65,8 @@ public class Storage {
      * @throws IOException Signals that an I/O exception to some sort has occurred.
      */
     public static void writeToFile() throws IOException {
-        FileWriter fw = new FileWriter(FileLocation);
         list = TaskList.UpdatedList();
+        FileWriter fw = new FileWriter(FileLocation);
         for (Task l : list) {
             fw.write(l + System.lineSeparator());
         }
@@ -78,7 +78,6 @@ public class Storage {
      */
     public static void main() {
         try {
-            Files.createDirectories(Paths.get(Directory));
             printFileContents(FileLocation);
             new TaskList(list, count); //Initialize data with existing file
         } catch (DukeException | IOException e) {

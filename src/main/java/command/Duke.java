@@ -27,6 +27,6 @@ public class Duke {
      */
 
     public static void main(String[] args) throws DukeException, IOException {
-        Ui.main();
+        Ui.main(); //Start interaction with User
     }
 }
