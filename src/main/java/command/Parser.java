@@ -40,7 +40,7 @@ public class Parser {
         } else if (input.trim().equalsIgnoreCase("list")) {
             TaskList.List();
         } else if (input.toLowerCase().contains("unmark")) {
-            TaskList.Mark(input);
+            TaskList.Unmark(input);
         } else if (input.toLowerCase().contains("mark")) {
             TaskList.Mark(input);
         } else if (input.toLowerCase().contains("delete")) {
