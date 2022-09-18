@@ -13,7 +13,59 @@ import task.*;
 public class Duke {
     public static int count = 0;
     public static int seq = 1;
+    public static boolean trigger = true;
     public static ArrayList<Task> list = new ArrayList<>();
+
+    private static void writeToFile(String filePath) throws IOException {
+        FileWriter fw = new FileWriter(filePath);
+        for (Task l : list) {
+            fw.write(l + System.lineSeparator());
+        }
+        fw.close();
+    }
+
+    private static void printFileContents(String filePath) throws DukeException , IOException {
+        File f = new File(filePath); // create a File for the given file path
+        Scanner s = new Scanner(f); // create a Scanner using the File as the source
+        if (!s.hasNext()) {
+            System.out.println("No existing data is found");
+        }
+        while (s.hasNext()) {
+            String current = s.nextLine();
+            System.out.println(current);
+            if (current.contains("[T]")) {
+                String description = current.substring(7);
+                list.add(new Todo(description));
+                if (current.contains("\u2713")) {
+                    list.get(count).setStatus(true);
+                }
+            }
+            else if (current.contains("[D]")) {
+                int m = current.indexOf("(");
+                int n = current.indexOf(")");
+                String description = current.substring(7,m-1);
+                String by = current.substring(m+5,n);
+                list.add(new Deadline(description,by));
+                if (current.contains("\u2713")) {
+                    list.get(count).setStatus(true);
+                }
+            }
+            else if (current.contains("[E]")) {
+                int m = current.indexOf("(");
+                int n = current.indexOf(")");
+                String description = current.substring(7,m-1);
+                String at = current.substring(m+5,n);
+                list.add(new Event(description,at));
+                if (current.contains("\u2713")) {
+                    list.get(count).setStatus(true);
+                }
+            }
+            else {
+                throw new DukeException("Error: Task in existing data is incompatible\n");
+            }
+            count++;
+        }
+    }
 
     public static void sort(String t) throws DukeException { //classify tasks between todo / deadline / event
         if (t.contains("todo")) {
