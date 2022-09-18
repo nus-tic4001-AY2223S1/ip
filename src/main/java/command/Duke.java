@@ -1,15 +1,13 @@
 package command;
 
+import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Arrays;
-import task.Task;
-import task.Todo;
-import task.Deadline;
-import task.Event;
+import task.*;
+
 public class Duke {
     public static int count = 0;
     public static int seq = 1;
-    public static Task[] list = new Task[100];
+    public static ArrayList<Task> list = new ArrayList<>();
 
     public static void sort(String t) throws DukeException { //classify tasks between todo / deadline / event
         if (t.contains("todo")) {
@@ -17,13 +15,12 @@ public class Duke {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
             }
             String description = t.substring(5);
-            Task[] print = Arrays.copyOf(list,count);
-            for (Task p : print) {
-                if (p.description.equals(description)) {
+            for (Task l : list) {
+                if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
-            list[count] = new Todo(description);
+            list.add(new Todo(description));
         }
         else if (t.contains("deadline")) {
             if (t.trim().length() < 9) {
@@ -35,13 +32,12 @@ public class Duke {
             int n = t.indexOf('/');
             String description = t.substring(9, n-1);
             String by = t.substring(n+4);
-            Task[] print = Arrays.copyOf(list,count);
-            for (Task p : print) {
-                if (p.description.equals(description)) {
+            for (Task l : list) {
+                if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
-            list[count] = new Deadline(description, by);
+            list.add(new Deadline(description, by));
         }
         else if (t.contains("event")) {
             if (t.trim().length() < 6) {
@@ -53,13 +49,12 @@ public class Duke {
             int n = t.indexOf('/');
             String description = t.substring(6, n-1);
             String at = t.substring(n+4);
-            Task[] print = Arrays.copyOf(list,count);
-            for (Task p : print) {
-                if (p.description.equals(description)) {
+            for (Task l : list) {
+                if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
                 }
             }
-            list[count] = new Event(description, at);
+            list.add(new Event(description, at));
         }
         else {
             throw new DukeException("Error: task.Task specified must be within the category of 'todo' / 'event' / 'deadline' only \n");
@@ -76,9 +71,8 @@ public class Duke {
         }
         else if (line.equals("list")) {                                          //Switch Case - List
                 System.out.println("Here are the tasks in your list:\n");
-                Task[] print = Arrays.copyOf(list,count);
-                for (Task p : print) {
-                    System.out.println(seq + ". " + p);
+            for (Task l : list) {
+                System.out.println(seq + ". " + l);
                     seq++;
                 }
                 System.out.println("\n");
@@ -91,14 +85,14 @@ public class Duke {
             }
             int n = Integer.parseInt(words[1]);
             if (n > count) throw new DukeException("Error: Please enter a valid task number\n");
-            if (list[n-1].getStatusIcon().equals(" ")) {
+            if (list.get(n-1).getStatusIcon().equals(" ")) {
                 throw new DukeException("Error: task.Task has already been unmarked\n");
             }
             else {
                 System.out.println("OK, I've marked this task as not done yet:");
-                list[n-1].setStatus(false);
+                list.get(n-1).setStatus(false);
             }
-            System.out.println(list[n-1] + "\n");
+            System.out.println(list.get(n-1) + "\n");
             echo();
         }
         else if (line.contains("mark")) {                                       //Switch Case - Mark
@@ -110,20 +104,20 @@ public class Duke {
             if (n > count) {
                 throw new DukeException("Error: Please enter a valid task number\n");
             }
-            if (list[n-1].getStatusIcon().equals("X")) {
+            if (list.get(n-1).getStatusIcon().equals("X")) {
                 throw new DukeException("Error: task.Task has already been marked\n");
             }
             else {
                 System.out.println("Nice! I've marked this task as done:");
-                list[n-1].setStatus(true);
+                list.get(n-1).setStatus(true);
             }
-            System.out.println(list[n-1] + "\n");
+            System.out.println(list.get(n-1) + "\n");
             echo();
         }
         else {                                                                  //Switch Case - Add task
             sort(line);
             System.out.println("Got it. I've added this task:");
-            System.out.println(list[count]);
+            System.out.println(list.get(count));
             count++;
             System.out.println("Now you have " + count + " tasks in the list.\n");
         }
