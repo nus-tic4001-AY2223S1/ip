@@ -178,11 +178,10 @@ public class Duke {
             System.out.println(list.get(n-1) + "\n");
             echo();
         }
-        else if (line.contains("delete")) {
-            else if (line.toLowerCase().contains("delete")) {
-                int m = line.toLowerCase().indexOf("delete");
-                String num = line.substring(m+6).trim();
-                if (num.length() < 1) {
+        else if (line.toLowerCase().contains("delete")) {
+            int m = line.toLowerCase().indexOf("delete");
+            String num = line.substring(m+6).trim();
+            if (num.length() < 1) {
                 throw new DukeException("Error: Please enter which task to be deleted\n");
             }
             int n = Integer.parseInt(num);
@@ -205,15 +204,33 @@ public class Duke {
             System.out.println("Now you have " + count + " tasks in the list.\n");
         }
     }
-
-    public static void main(String[] args) throws DukeException {
-        String greet = "Hello! I'm command.Duke\n" + "What can I do for you?\n";
-        System.out.println(greet);
-        while(true) {
+        public static void main(String[] args) {
+            System.out.println("Hello! I'm Duke\n" + "Let me load the existing data for you (if any)\n");
+            String FileLocation = "data/duke.txt";
+            String Directory = "./data/";
             try {
-                echo(); //push into recursive loop echo()
+                Path path = Paths.get(Directory);
+                Files.createDirectories(path);
+                printFileContents(FileLocation);
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
+                trigger = true;
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+            System.out.println("What would you like to do ?");
+        while(true) {
+            try {
+                echo(); //push into loop echo()
+                if (trigger) {
+                    writeToFile(FileLocation); //only make changes when task list changes
+                }
+                trigger = true;
+            } catch (DukeException e) {
+                System.out.println(e.getMessage());
+                trigger = true;
+            }catch (IOException e) {
+                System.out.println("Something went wrong: " + e.getMessage());
             }
         }
     }
