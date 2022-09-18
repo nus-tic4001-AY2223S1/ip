@@ -1,11 +1,9 @@
 package task;
 
 /**
- * This program is a child of the Task program. It helps add an additional classification to the Task program.
+ * This program is a child of the Task program. It helps add a classification to the Task program.
  * This form of program includes a task that includes only a description but has no time set for its completion.
  */
-
-import task.Task;
 
 public class Todo extends Task {
 
