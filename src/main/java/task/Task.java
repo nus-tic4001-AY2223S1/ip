@@ -28,7 +28,7 @@ public abstract class Task {
 
     public String getStatusIcon() {
 
-        return (isDone ? "X" : " "); //return X or blank symbols
+        return (isDone ? "X" : " "); //return X or blank symbol
     }
     /**
      * This method is used to get the description of a task
@@ -47,8 +47,7 @@ public abstract class Task {
     }
 
     /**
-     * This method is used to return the String output of the Task is a specified manner.
-     * @return Returns the String that includes the getStatus and description of the task.
+     * This abstract method is used to return the String output of the Task is a specified manner.
      */
     public abstract String toString();
 }
