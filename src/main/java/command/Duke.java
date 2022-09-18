@@ -124,25 +124,29 @@ public class Duke {
         Scanner in = new Scanner(System.in);
         String line = in.nextLine();
 
-        if (line.equals("bye")) {                                                //Switch Case - Bye
+        if (line.trim().equalsIgnoreCase("bye")) {                                              //Switch Case - Bye
             System.out.println("Bye. Hope to see you again soon!");
             System.exit(0);
         }
-        else if (line.equals("list")) {                                          //Switch Case - List
-                System.out.println("Here are the tasks in your list:\n");
+        else if (line.trim().equalsIgnoreCase("list")) {
+            if (count == 0) {
+                throw new DukeException("There are no items currently in the list\n");
+            }                                          //Switch Case - List
+            System.out.println("Here are the tasks in your list:\n");
+            int seq = 1;
             for (Task l : list) {
                 System.out.println(seq + ". " + l);
-                    seq++;
-                }
-                System.out.println("\n");
-                seq = 1;
+                seq++;
+            }
+            trigger = false;
         }
-        else if (line.contains("unmark")) {                                      //Switch Case - Unmark
-            String[] words = line.split(" ");
-            if (words.length < 2 || words[1].trim().equals("")) {
+        else if (line.toLowerCase().contains("unmark")) {                                        //Switch Case - Unmark
+            int m = line.toLowerCase().indexOf("unmark");
+            String num = line.substring(m+4).trim();
+            if (num.length() < 1) {
                 throw new DukeException("Error: Please enter which task to unmark\n");
             }
-            int n = Integer.parseInt(words[1]);
+            int n = Integer.parseInt(num);
             if (n > count) throw new DukeException("Error: Please enter a valid task number\n");
             if (list.get(n-1).getStatusIcon().equals(" ")) {
                 throw new DukeException("Error: task.Task has already been unmarked\n");
@@ -154,12 +158,13 @@ public class Duke {
             System.out.println(list.get(n-1) + "\n");
             echo();
         }
-        else if (line.contains("mark")) {                                       //Switch Case - Mark
-            String[] words = line.split(" ");
-            if (words.length < 2 || words[1].trim().equals("")) {
+        else if (line.toLowerCase().contains("mark")) {                                      //Switch Case - Mark
+            int m = line.toLowerCase().indexOf("mark");
+            String num = line.substring(m+4).trim();
+            if (num.length() < 1) {
                 throw new DukeException("Error: Please enter which task is done\n");
             }
-            int n = Integer.parseInt(words[1]);
+            int n = Integer.parseInt(num);
             if (n > count) {
                 throw new DukeException("Error: Please enter a valid task number\n");
             }
@@ -174,11 +179,13 @@ public class Duke {
             echo();
         }
         else if (line.contains("delete")) {
-            String[] words = line.split(" ");
-            if (words.length < 2 || words[1].trim().equals("")) {
+            else if (line.toLowerCase().contains("delete")) {
+                int m = line.toLowerCase().indexOf("delete");
+                String num = line.substring(m+6).trim();
+                if (num.length() < 1) {
                 throw new DukeException("Error: Please enter which task to be deleted\n");
             }
-            int n = Integer.parseInt(words[1]);
+            int n = Integer.parseInt(num);
             if (n > count) {
                 throw new DukeException("Error: Please enter a valid task number\n");
             }
