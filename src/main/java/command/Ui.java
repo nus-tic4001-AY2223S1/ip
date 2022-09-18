@@ -14,26 +14,36 @@ public class Ui {
         Scanner in = new Scanner(System.in);
         String line = in.nextLine();
         Parser.parse(line);
-        Storage.writeToFile();
-        System.out.println("\n");
     }
 
     /**
      * This method starts the interaction with the user and asks to provide for a user-input so that it can scan the input and provide it to another class for execution purposes.
      * @throws DukeException Error that is thrown if user inputs an incompatible command.
      */
-    public static void main() throws DukeException {
-        System.out.println("Hello! I'm Duke\n" + "Let me load the existing data for you (if any)\n");
+    public static void main() throws DukeException, IOException {
+        System.out.println("Hello! I'm Duke\n");
+        FilePath.main(); //Confirm current directory / file or choose a different directory / file.
         if (TaskList.UpdatedList().size() == 0) {
             System.out.println("No existing data is found");
         }
         else {
-            Parser.parse("list");
+            Parser.parse("list"); //Load initial list onto screen
         }
-        System.out.println("What would you like to do ?\n");
+        System.out.println("\nWhat would you like to do ?");
+        System.out.println("List of valid entries include the following:\n\n" +
+                "Bye\n"     +
+                "List\n"    +
+                "Mark         'X'\n" +
+                "Unmark       'X'\n" +
+                "Delete       'X'\n" +
+                "Todo         'Y'\n" +
+                "Event        'Y' /at 'Z'\n" +
+                "Deadline     'Y' /by 'Z'\n" +
+                "Where 'X' refers to the task number, 'Y' refers to the task description and 'Z' refers to the date using the format YYYY-MM-DD.\n");
         while (true) {
             try {
                 command();
+                System.out.print("\n");
             } catch (DukeException | IOException e) {
                 System.out.println(e.getMessage());
             }

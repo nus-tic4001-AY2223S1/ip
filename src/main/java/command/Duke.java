@@ -1,5 +1,6 @@
 package command;
 import task.DukeException;
+import java.io.IOException;
 
 /**
  * <h2> Duke, your personalized task manager </h2>
@@ -25,8 +26,7 @@ public class Duke {
      * @see DukeException
      */
 
-    public static void main(String[] args) throws DukeException {
-        Storage.main();
-        Ui.main();
+    public static void main(String[] args) throws DukeException, IOException {
+        Ui.main(); //Start interaction with User
     }
 }
