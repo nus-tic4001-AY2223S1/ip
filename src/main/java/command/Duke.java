@@ -12,7 +12,6 @@ import task.*;
 
 public class Duke {
     public static int count = 0;
-    public static int seq = 1;
     public static boolean trigger = true;
     public static ArrayList<Task> list = new ArrayList<>();
 
@@ -68,11 +67,12 @@ public class Duke {
     }
 
     public static void sort(String t) throws DukeException { //classify tasks between todo / deadline / event
-        if (t.contains("todo")) {
+        if (t.toLowerCase().contains("todo")) {
             if (t.trim().length() < 5) {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
             }
-            String description = t.substring(5);
+            int m = t.toLowerCase().indexOf("todo");
+            String description = t.substring(m+4).trim();
             for (Task l : list) {
                 if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
@@ -80,16 +80,17 @@ public class Duke {
             }
             list.add(new Todo(description));
         }
-        else if (t.contains("deadline")) {
+        else if (t.toLowerCase().contains("deadline")) {
             if (t.trim().length() < 9) {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
             }
             if (!t.contains("/")) {
                 throw new DukeException("Error: Please specify time.\n");
             }
+            int m = t.toLowerCase().indexOf("deadline");
             int n = t.indexOf('/');
-            String description = t.substring(9, n-1);
-            String by = t.substring(n+4);
+            String description = t.substring(m+8,n).trim();
+            String by = t.substring(n+3).trim();
             for (Task l : list) {
                 if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
@@ -97,16 +98,17 @@ public class Duke {
             }
             list.add(new Deadline(description, by));
         }
-        else if (t.contains("event")) {
+        else if (t.toLowerCase().contains("event")) {
             if (t.trim().length() < 6) {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
             }
             if (!t.contains("/")) {
                 throw new DukeException("Error: Please specify time.\n");
             }
+            int m = t.toLowerCase().indexOf("event");
             int n = t.indexOf('/');
-            String description = t.substring(6, n-1);
-            String at = t.substring(n+4);
+            String description = t.substring(m+5,n).trim();
+            String at = t.substring(n+3).trim();
             for (Task l : list) {
                 if (l.description.equals(description)) {
                     throw new DukeException("Error: task.Task has already been added previously\n");
@@ -119,9 +121,8 @@ public class Duke {
         }
     }
     public static void echo() throws DukeException { //classify commands such as bye / list / unmark / mark / add tasks
-        String line;
         Scanner in = new Scanner(System.in);
-        line = in.nextLine();
+        String line = in.nextLine();
 
         if (line.equals("bye")) {                                                //Switch Case - Bye
             System.out.println("Bye. Hope to see you again soon!");
