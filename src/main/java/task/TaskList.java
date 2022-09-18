@@ -50,7 +50,7 @@ public class TaskList {
 
     public static void Unmark(String line) throws DukeException {
         int m = line.toLowerCase().indexOf("unmark");
-        String num = line.substring(m+4).trim();
+        String num = line.substring(m+6).trim();
         if (num.length() < 1) {
             throw new DukeException("Error: Please enter which task to unmark\n");
         }
