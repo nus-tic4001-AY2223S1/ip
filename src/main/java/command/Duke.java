@@ -4,12 +4,49 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import task.*;
 
+/**
+ * <h2> Duke, your personalized task manager </h2>
+ * <br>This task manager shall assist to add / remove various kinds of tasks that might include their estimated completion dates.
+ * <br>It also allows you to view your current tasks at hand, check if they have been completed and check which tasks occur on any given date.
+ * <p>
+ * Its error-detection and user-input flexibility makes this task manager more functional and user-friendly.
+ * <br>Hope you enjoy using this task manager !
+ *
+ * @author Roshan Kumar
+ * @version 1.0
+ * @since 18/09/2022
+ */
+
 public class Duke {
+
+    /**
+     * This is the main method which does 2 key things to get the program started.
+     *<br>  1. It loads any previously stored Tasks List into the current program, so you can continue from that point forward.
+     *<br>  2. Lets you add various task types accordingly.
+     *
+     * @see DukeException
+     */
     public static int count = 0;
     public static int seq = 1;
     public static ArrayList<Task> list = new ArrayList<>();
 
     public static void sort(String t) throws DukeException { //classify tasks between todo / deadline / event
+
+        /**
+         * This class registers the user-inputs and makes sense of the command that the program is supposed to execute.
+         * <br> It contains the following approved actions:
+         * <ol>
+         *     <li>List: Allows to list all the tasks inside TaskList</li>
+         *     <li>Bye: Exits the Task Manager</li>
+         *     <li>Mark: Marks a task as completed</li>
+         *     <li>Unmark: Marks a task as not completed</li>
+         *     <li>Delete: Deletes a task from the TaskList</li>
+         *     <li>Todo / Event / Deadline: Adds one of the following tasks into the TaskList</li>
+         * </ol>
+         * <p>
+         * Once it understand what the user-input is referring to, it passes the appropriate command to the TaskList for execution.
+         */
+
         if (t.contains("todo")) {
             if (t.trim().length() < 5) {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
