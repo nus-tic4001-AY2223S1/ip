@@ -44,6 +44,10 @@ public abstract class Task {
         return totalTask;
     }
 
+    public static void setTotalTask() {
+        totalTask--;
+    }
+
     @Override
     public abstract String toString();
 }
