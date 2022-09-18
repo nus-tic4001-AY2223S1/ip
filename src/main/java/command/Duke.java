@@ -114,6 +114,23 @@ public class Duke {
             System.out.println(list.get(n-1) + "\n");
             echo();
         }
+        else if (line.contains("delete")) {
+            String[] words = line.split(" ");
+            if (words.length < 2 || words[1].trim().equals("")) {
+                throw new DukeException("Error: Please enter which task to be deleted\n");
+            }
+            int n = Integer.parseInt(words[1]);
+            if (n > count) {
+                throw new DukeException("Error: Please enter a valid task number\n");
+            }
+            else {
+                System.out.println("Noted. I've removed this task:");
+                System.out.println(list.get(n-1));
+                list.remove(n-1);
+                count--;
+                System.out.println("Now you have " + count + " tasks in the list.\n");
+            }
+        }
         else {                                                                  //Switch Case - Add task
             sort(line);
             System.out.println("Got it. I've added this task:");
