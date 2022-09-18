@@ -30,23 +30,19 @@ public class Duke {
     public static int seq = 1;
     public static ArrayList<Task> list = new ArrayList<>();
 
+    /**
+     * This class registers the user-inputs and sorts what the program supposed to execute and adds the task into the list.
+     * <br> It contains the following approved actions:
+     * <ol>
+     *     <li>Todo</li>
+     *     <li>Event</li>
+     *     <li>Deadline</li>
+     * </ol>
+     * <p>
+     * Once it understand what the user-input is referring to, it adds the task into the list.
+     */
+
     public static void sort(String t) throws DukeException { //classify tasks between todo / deadline / event
-
-        /**
-         * This class registers the user-inputs and makes sense of the command that the program is supposed to execute.
-         * <br> It contains the following approved actions:
-         * <ol>
-         *     <li>List: Allows to list all the tasks inside TaskList</li>
-         *     <li>Bye: Exits the Task Manager</li>
-         *     <li>Mark: Marks a task as completed</li>
-         *     <li>Unmark: Marks a task as not completed</li>
-         *     <li>Delete: Deletes a task from the TaskList</li>
-         *     <li>Todo / Event / Deadline: Adds one of the following tasks into the TaskList</li>
-         * </ol>
-         * <p>
-         * Once it understand what the user-input is referring to, it passes the appropriate command to the TaskList for execution.
-         */
-
         if (t.contains("todo")) {
             if (t.trim().length() < 5) {
                 throw new DukeException("Error: Description of task cannot be empty.\n");
@@ -97,6 +93,21 @@ public class Duke {
             throw new DukeException("Error: task.Task specified must be within the category of 'todo' / 'event' / 'deadline' only \n");
         }
     }
+
+    /**
+     * This class registers the user-inputs and makes sense of the command that the program is supposed to execute.
+     * <br> It contains the following approved actions:
+     * <ol>
+     *     <li>Bye: Exits the Task Manager</li>
+     *     <li>List: Allows to list all the tasks inside TaskList</li>
+     *     <li>Unmark: Marks a task as not completed</li>
+     *     <li>Mark: Marks a task as completed</li>
+     *     <li>Delete: Deletes a task from the TaskList</li>
+     * </ol>
+     * <p>
+     * Once it understand what the user-input is referring to, it passes the appropriate command to the TaskList for execution.
+     */
+
     public static void echo() throws DukeException { //classify commands such as bye / list / unmark / mark / add tasks
         String line;
         Scanner in = new Scanner(System.in);
@@ -177,6 +188,10 @@ public class Duke {
         }
     }
 
+    /**
+     * This method starts the interaction with the user and asks to provide for a user-input so that it can scan the input and provide it to another class for execution purposes.
+     * @throws DukeException Error that is thrown if user inputs an incompatible command.
+     */
     public static void main(String[] args) throws DukeException {
         String greet = "Hello! I'm command.Duke\n" + "What can I do for you?\n";
         System.out.println(greet);
