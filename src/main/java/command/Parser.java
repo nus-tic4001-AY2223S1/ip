@@ -41,8 +41,6 @@ public class Parser {
         } else if (input.toLowerCase().contains("mark")) {
             TaskList.Mark(input);
             change = true;
-        } else if (input.toLowerCase().contains("find")) {
-            TaskList.Find(input.substring(5));
         } else if (input.toLowerCase().contains("delete")) {
             TaskList.Delete(input);
             change = true;
