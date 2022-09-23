@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TodoTest {
     @Test
-    public void dummyTest(){
+    public void stringType(){
         assertEquals(2, 2);
     }
 }
