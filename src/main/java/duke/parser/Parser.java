@@ -50,6 +50,7 @@ public class Parser {
             case "event":
                 return new AddCommand();
             case "delete": return new DeleteCommand();
+            case "find": return new FindCommand();
             default: throw new DukeException("\u2639 " + "OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }
