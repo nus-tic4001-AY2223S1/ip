@@ -2,7 +2,7 @@
 
 ## How it Works?
 1. Run the command, `java -jar ip.jar`, in the same folder as the jar file.
-2. Specify a filename to begin. If the file exists at *C:\Users\computer name\Duke\filename.txt*, it will be used as the working file. Otherwise, a new file will be automatically created at the same directory. 
+2. Specify a filename to begin. If the file exists at *C:\Users\computer name\Duke\filename.txt*, it will be used as the working file. Otherwise, a new file will be automatically created in the same directory. 
 3. You can exit the application by typing `bye` and hitting the `enter` key.
 
 ## Features 

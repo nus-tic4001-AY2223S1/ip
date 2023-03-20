@@ -8,19 +8,17 @@ import java.util.ArrayList;
 
 public class ListCommand extends Command {
     @Override
-    public void execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
+    public String execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
         if (taskList.isEmpty()) {
-            throw new DukeException("    The list is empty!");
+            return "    The list is empty!";
         } else {
-            System.out.println("    Here are the task(s) in your file:");
-            for (int i = 0; i < taskList.size(); i++) {
-                System.out.println("      " + (i + 1) + "." + (taskList.get(i)));
-            }
-        }
-    }
+            String s = "    Here are the task(s) in your file:";
 
-    @Override
-    public boolean setIsExit() {
-        return isExit = false;
+            for (int i = 0; i < taskList.size(); i++) {
+                s += "\n" + "      " + (i + 1) + "." + (taskList.get(i));
+            }
+
+            return s;
+        }
     }
 }
