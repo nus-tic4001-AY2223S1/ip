@@ -11,14 +11,15 @@ import java.util.ArrayList;
 
 public class AddCommand extends Command {
     @Override
-    public void execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
+    public String execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
         try {
+            String newLine = System.getProperty("line.separator");
             String description;
             boolean isIncluded = false;
             String[] firstWord = userInput.split(" ", 2);
 
-            if (firstWord[1].equals("")) {
-                throw new DukeException("\u2639 " + userInput + "keyword must not be empty!");
+            if (firstWord[1].isBlank()) {
+                return "\u2639 " + firstWord[0] + " keyword must not be empty!";
             }
 
             for (Task task : taskList) {
@@ -29,7 +30,7 @@ public class AddCommand extends Command {
             }
 
             if (isIncluded) {
-                throw new DukeException("The current list contains this task.");
+                return "The current list contains this task.";
             } else {
                 switch (firstWord[0]) {
                     case "todo": {
@@ -58,19 +59,16 @@ public class AddCommand extends Command {
                     storage.saveTaskToFile(taskList.get(i), file);
                 }
 
-                System.out.println("     Got it. I've added this task:");
-                System.out.println("       " + (taskList.get(taskList.size() - 1)));
-                System.out.println("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
+                return "     Got it. I've added this task:"
+                        .concat(newLine)
+                        .concat("       " + (taskList.get(taskList.size() - 1)))
+                        .concat(newLine)
+                        .concat("     Now you have " + Task.getTotalTask() + " task(s) in the list.");
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new DukeException("\u2639 " + userInput + " keyword must be followed by a new valid task");
+            return "\u2639 " + userInput + " keyword must be followed by a new valid task";
         } catch (StringIndexOutOfBoundsException e) {
-            throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format must be provided.");
+            return "\u2639 " + "Check the Duke basic input commands!!! Correct input format must be provided.";
         }
-    }
-
-    @Override
-    public boolean setIsExit() {
-        return isExit = false;
     }
 }

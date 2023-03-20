@@ -8,26 +8,25 @@ import java.util.ArrayList;
 
 public class MarkCommand extends Command{
     @Override
-    public void execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
+    public String execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
         try {
+            String newLine = System.getProperty("line.separator");
             int markTaskIndex = Integer.parseInt(userInput.substring(5)) - 1;
 
             taskList.get(markTaskIndex).setStatusIcon("mark");
-            System.out.println("    Nice! I've marked this task as done:");
-            System.out.println("      " + taskList.get(markTaskIndex));
             storage.updateTaskFile(taskList, file);
+
+            return "    Nice! I've marked this task as done:"
+                    .concat(newLine)
+                    .concat("      " + taskList.get(markTaskIndex));
         } catch (StringIndexOutOfBoundsException e) {
-            throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! Correct input format for 'mark' keyword must be provided.");
+            return "\u2639 " + "Check the Duke basic input commands!!! Correct input format for 'mark' keyword must be provided.";
         } catch (IndexOutOfBoundsException e) {
-            throw new DukeException("\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.");
+            return "\u2639 " + "OOPS!!! It's either the task's list is empty or the index entered is out of bound.";
         } catch (NumberFormatException e) {
-            throw new DukeException("\u2639 " + "Check the Duke basic input commands!!! 'mark' keyword must be followed by a positive integer.");
+            return "\u2639 " + "Check the Duke basic input commands!!! 'mark' keyword must be followed by a positive integer.";
         } catch (DukeException e) {
-            throw new DukeException("Something went wrong: " + e.getMessage());
+            return "Something went wrong: " + e.getMessage();
         }
-    }
-    @Override
-    public boolean setIsExit() {
-        return isExit = false;
     }
 }

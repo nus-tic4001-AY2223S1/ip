@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Parser {
-    public static void  parseTaskFromFile(Path pathFile, Storage storage) {
+    public static String parseTaskFromFile(Path pathFile, Storage storage) {
         try {
             File f = pathFile.toFile();
             Scanner s = new Scanner(f);
@@ -31,9 +31,9 @@ public class Parser {
                     storage.loadTaskFromFile("event " + line.substring(7, line.indexOf(" (")) + " /at " + line.substring(line.indexOf(" (") + 6, line.indexOf(")")), taskStatus);
                 }
             }
-            System.out.println("    Currently, you have " + Task.getTotalTask() + " task(s) in the list.\n");
+            return "    Currently, you have " + Task.getTotalTask() + " task(s) in the list.\n";
         } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
+            return "File not found: " + e.getMessage();
         }
     }
 
