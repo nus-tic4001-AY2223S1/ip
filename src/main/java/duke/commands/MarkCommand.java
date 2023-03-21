@@ -11,7 +11,8 @@ public class MarkCommand extends Command{
     public String execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
         try {
             String newLine = System.getProperty("line.separator");
-            int markTaskIndex = Integer.parseInt(userInput.substring(5)) - 1;
+            String[] firstWord = userInput.split(" ", 2);
+            int markTaskIndex = Integer.parseInt(firstWord[1]) - 1;
 
             taskList.get(markTaskIndex).setStatusIcon("mark");
             storage.updateTaskFile(taskList, file);

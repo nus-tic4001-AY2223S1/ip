@@ -41,16 +41,28 @@ public class Parser {
         String[] firstWord = userInput.split(" ", 2);
 
         switch (firstWord[0]) {
-            case "bye": return new ExitCommand();
-            case "list": return new ListCommand();
-            case "mark": return new MarkCommand();
-            case "unmark": return new UnmarkCommand();
+            case "bye":
+            case "b/":
+                return new ExitCommand();
+            case "list":
+            case "l/":
+                return new ListCommand();
+            case "mark":
+            case "m/":
+                return new MarkCommand();
+            case "unmark":
+            case "u/":
+                return new UnmarkCommand();
             case "todo":
             case "deadline":
             case "event":
                 return new AddCommand();
-            case "delete": return new DeleteCommand();
-            case "find": return new FindCommand();
+            case "delete":
+            case "d/":
+                return new DeleteCommand();
+            case "find":
+            case "f/":
+                return new FindCommand();
             default: throw new DukeException("\u2639 " + "OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }
