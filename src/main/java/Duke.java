@@ -34,8 +34,10 @@ public class Duke {
      */
     protected String getResponse(String input) {
         try {
-            if (input.startsWith("sf")) {
-                return setWorkingFile(input.substring(3));
+            String[] firstWord = input.split(" ", 2);
+
+            if (firstWord[0].equals("set") || firstWord[0].equals("s/")) {
+                return setWorkingFile(firstWord[1]);
             } else if (file == null) {
                 return "Please set the working file first!";
             } else {

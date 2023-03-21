@@ -11,7 +11,8 @@ public class UnmarkCommand extends Command{
     public String execute(String userInput, ArrayList<Task> taskList, Storage storage, File file) throws DukeException {
         try {
             String newLine = System.getProperty("line.separator");
-            int unmarkTaskIndex = Integer.parseInt(userInput.substring(7)) - 1;
+            String[] firstWord = userInput.split(" ", 2);
+            int unmarkTaskIndex = Integer.parseInt(firstWord[1]) - 1;
 
             taskList.get(unmarkTaskIndex).setStatusIcon("unmark");
             storage.updateTaskFile(taskList, file);
