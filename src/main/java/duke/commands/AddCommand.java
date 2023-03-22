@@ -33,21 +33,24 @@ public class AddCommand extends Command {
                 return "The current list contains this task.";
             } else {
                 switch (firstWord[0]) {
-                    case "todo": {
-                        description = userInput.substring(5);
+                    case "todo":
+                    case "t/": {
+                        description = firstWord[1];
 
                         taskList.add(new TodoTask(description));
                         break;
                     }
-                    case "deadline": {
-                        description = userInput.substring(9, userInput.indexOf(" /by"));
+                    case "deadline":
+                    case "d/": {
+                        description = firstWord[1].substring(0, firstWord[1].indexOf(" /by"));
                         String by = userInput.substring(userInput.indexOf("/by") + 4);
 
                         taskList.add(new DeadlineTask(description, by));
                         break;
                     }
-                    case "event": {
-                        description = userInput.substring(6, userInput.indexOf(" /at"));
+                    case "event":
+                    case "e/": {
+                        description = firstWord[1].substring(0, firstWord[1].indexOf(" /at"));
                         String at = userInput.substring(userInput.indexOf("/at") + 4);
 
                         taskList.add(new EventTask(description, at));
