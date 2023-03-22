@@ -54,11 +54,14 @@ public class Parser {
             case "u/":
                 return new UnmarkCommand();
             case "todo":
+            case "t/":
             case "deadline":
+            case "d/":
             case "event":
+            case "e/":
                 return new AddCommand();
             case "delete":
-            case "d/":
+            case "dd/":
                 return new DeleteCommand();
             case "find":
             case "f/":
